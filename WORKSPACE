@@ -1,11 +1,9 @@
-JUNIT_JUPITER_VERSION = "5.10.1"
-
-JUNIT_PLATFORM_VERSION = "1.10.1"
-
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
+## Java
+JUNIT_JUPITER_VERSION = "5.10.1"
+JUNIT_PLATFORM_VERSION = "1.10.1"
 RULES_JVM_EXTERNAL_TAG = "4.4.2"
-
 RULES_JVM_EXTERNAL_SHA = "735602f50813eb2ea93ca3f5e43b1959bd80b213b836a07a62a29d757670b77b"
 
 http_archive(
@@ -42,7 +40,6 @@ maven_install(
 )
 
 CONTRIB_RULES_JVM_VERSION = "0.9.0"
-
 CONTRIB_RULES_JVM_SHA = "548f0583192ff79c317789b03b882a7be9b1325eb5d3da5d7fdcc4b7ca69d543"
 
 http_archive(
@@ -60,9 +57,7 @@ load("@contrib_rules_jvm//:setup.bzl", "contrib_rules_jvm_setup")
 
 contrib_rules_jvm_setup()
 
-### Go
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
+## Go
 http_archive(
     name = "io_bazel_rules_go",
     sha256 = "099a9fb96a376ccbbb7d291ed4ecbdfd42f6bc822ab77ae6f1b5cb9e914e94fa",
@@ -83,23 +78,35 @@ http_archive(
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
-#load("//:deps.bzl", "go_dependencies")
 
-# Declare Go direct dependencies.
+############################################################
+# Define your own dependencies here using go_repository.
+# Else, dependencies declared by rules_go/gazelle will be used.
+# The first declaration of an external repository "wins".
+############################################################
 
-#go_repository(
-#    name = "com_github_stretchr_testify",
-#    importpath = "github.com/stretchr/testify",
-#    sum = "h1:hDPOHmpOpP40lSULcqw7IrRb/u7w6RpDC9399XyoNd0=",
-#    version = "v1.6.1",
-#)
+load("//:deps.bzl", "go_dependencies")
 
-# Declare indirect dependencies and register toolchains.
-#go_dependencies()
+# gazelle:repository_macro deps.bzl%go_dependencies
+go_dependencies()
 
 go_rules_dependencies()
 
-go_register_toolchains(version = "1.20.7")
+go_register_toolchains(version = "1.19.3")
 
 gazelle_dependencies()
-#gazelle_dependencies(go_repository_default_config = "@//:WORKSPACE.bazel")
+
+## protobuf
+http_archive(
+    name = "com_google_protobuf",
+    sha256 = "d0f5f605d0d656007ce6c8b5a82df3037e1d8fe8b121ed42e536f569dec16113",
+    strip_prefix = "protobuf-3.14.0",
+    urls = [
+        "https://mirror.bazel.build/github.com/protocolbuffers/protobuf/archive/v3.14.0.tar.gz",
+        "https://github.com/protocolbuffers/protobuf/archive/v3.14.0.tar.gz",
+    ],
+)
+
+load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+
+protobuf_deps()
