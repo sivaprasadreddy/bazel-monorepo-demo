@@ -27,6 +27,9 @@ load("@rules_jvm_external//:defs.bzl", "maven_install")
 
 maven_install(
     artifacts = [
+        "org.postgresql:postgresql:42.6.0",
+        "ch.qos.logback:logback-classic:1.4.6",
+        "org.testcontainers:postgresql:1.19.3",
         "org.junit.platform:junit-platform-launcher:%s" % JUNIT_PLATFORM_VERSION,
         "org.junit.platform:junit-platform-reporting:%s" % JUNIT_PLATFORM_VERSION,
         "org.junit.jupiter:junit-jupiter-api:%s" % JUNIT_JUPITER_VERSION,
