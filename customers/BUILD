@@ -25,6 +25,12 @@ java_library(
     ],
 )
 
+java_library(
+    name = "customers-test-resources",
+    resources = glob(["src/test/resources/**/*"]),
+
+)
+
 java_test_suite(
     name = "customers-lib-tests",
     srcs = glob(["src/test/java/**/*.java"]),
@@ -36,6 +42,7 @@ java_test_suite(
     runtime_deps = JUNIT5_DEPS,
     deps = [
         ":customers-lib",
+        ":customers-test-resources",
         artifact("org.junit.jupiter:junit-jupiter-api"),
         artifact("org.junit.jupiter:junit-jupiter-params"),
         artifact("org.testcontainers:postgresql"),
