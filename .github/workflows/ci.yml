@@ -16,6 +16,8 @@ jobs:
       with:
         wait: true
         token: ${{ secrets.TC_CLOUD_TOKEN }}
+    - name: Setup Remote Docker
+      run: echo "DOCKER_HOST=$(cat ~/.testcontainers.properties | grep 'docker.host' | cut -d '=' -f2 | xargs)" >> $GITHUB_ENV
 
     - name: Build and Test
       run: |
