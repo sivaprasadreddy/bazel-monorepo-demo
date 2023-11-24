@@ -43,7 +43,7 @@ func TestProductRepository(t *testing.T) {
 	assert.NoError(t, err)
 
 	c, err := repo.CreateProduct(ctx, Product{
-		Name: "iPhone 12",
+		Name: "iPhone 14",
 	})
 	assert.NoError(t, err)
 	assert.NotNil(t, c)
@@ -51,5 +51,5 @@ func TestProductRepository(t *testing.T) {
 	product, err := repo.GetProductById(ctx, c.Id)
 	assert.NoError(t, err)
 	assert.NotNil(t, product)
-	assert.Equal(t, "iPhone 12", product.Name)
+	assert.Equal(t, "iPhone 14", product.Name)
 }
